@@ -9,7 +9,7 @@
   ============================================================
   BEFORE FIRST DEPLOYMENT — REPLACE THE BASE URL
   ============================================================
-  Find:    https://thoughtrons.github.io/excel-addin
+  Find:    https://naarad.github.io/excel-addin/
   Replace: <your hosting URL — must be HTTPS, no trailing slash>
   ============================================================
 -->
@@ -26,8 +26,8 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Thoughtrons Excel"/>
   <Description DefaultValue="Brand-styled block library, classification stamps, and quick-insert toolbox for Thoughtrons Excel workbooks."/>
-  <IconUrl DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/tab-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/tab-80.png"/>
+  <IconUrl DefaultValue="https://naarad.github.io/excel-addin//assets/icons/tab-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://naarad.github.io/excel-addin//assets/icons/tab-80.png"/>
   <SupportUrl DefaultValue="https://thoughtrons.in/"/>
 
   <AppDomains>
@@ -40,7 +40,7 @@
   </Hosts>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://thoughtrons.github.io/excel-addin/src/taskpane.html"/>
+    <SourceLocation DefaultValue="https://naarad.github.io/excel-addin//src/taskpane.html"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
@@ -218,20 +218,20 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.Library.16"   DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/library-16.png"/>
-        <bt:Image id="Icon.Library.32"   DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/library-32.png"/>
-        <bt:Image id="Icon.Library.80"   DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/library-80.png"/>
-        <bt:Image id="Icon.Grid.16"      DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/grid-16.png"/>
-        <bt:Image id="Icon.Grid.32"      DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/grid-32.png"/>
-        <bt:Image id="Icon.Grid.80"      DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/grid-80.png"/>
-        <bt:Image id="Icon.Classify.16"  DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/classify-16.png"/>
-        <bt:Image id="Icon.Classify.32"  DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/classify-32.png"/>
-        <bt:Image id="Icon.Classify.80"  DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/classify-80.png"/>
+        <bt:Image id="Icon.Library.16"   DefaultValue="https://naarad.github.io/excel-addin//assets/icons/library-16.png"/>
+        <bt:Image id="Icon.Library.32"   DefaultValue="https://naarad.github.io/excel-addin//assets/icons/library-32.png"/>
+        <bt:Image id="Icon.Library.80"   DefaultValue="https://naarad.github.io/excel-addin//assets/icons/library-80.png"/>
+        <bt:Image id="Icon.Grid.16"      DefaultValue="https://naarad.github.io/excel-addin//assets/icons/grid-16.png"/>
+        <bt:Image id="Icon.Grid.32"      DefaultValue="https://naarad.github.io/excel-addin//assets/icons/grid-32.png"/>
+        <bt:Image id="Icon.Grid.80"      DefaultValue="https://naarad.github.io/excel-addin//assets/icons/grid-80.png"/>
+        <bt:Image id="Icon.Classify.16"  DefaultValue="https://naarad.github.io/excel-addin//assets/icons/classify-16.png"/>
+        <bt:Image id="Icon.Classify.32"  DefaultValue="https://naarad.github.io/excel-addin//assets/icons/classify-32.png"/>
+        <bt:Image id="Icon.Classify.80"  DefaultValue="https://naarad.github.io/excel-addin//assets/icons/classify-80.png"/>
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="Commands.Url"            DefaultValue="https://thoughtrons.github.io/excel-addin/src/commands.html"/>
-        <bt:Url id="Taskpane.Url"            DefaultValue="https://thoughtrons.github.io/excel-addin/src/taskpane.html"/>
+        <bt:Url id="Commands.Url"            DefaultValue="https://naarad.github.io/excel-addin//src/commands.html"/>
+        <bt:Url id="Taskpane.Url"            DefaultValue="https://naarad.github.io/excel-addin//src/taskpane.html"/>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://thoughtrons.in/"/>
       </bt:Urls>
 
