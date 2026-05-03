@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Thoughtrons Block Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script src="./blocks.js" type="text/javascript"></script>
+  <style>
+    :root { --bg: #0A0A0A; --surface: #161616; --border: #2A2A2A; --border-hi: #3D3D3D;
+      --accent: #ED8B1F; --text: #FFFFFF; --text2: #A8A8A8; --text3: #6B6B6B; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; }
+    header { padding: 14px 14px 10px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; background: var(--bg); }
+    .eyebrow { font-family: Consolas, monospace; font-size: 10px; color: var(--text2); text-transform: uppercase; font-weight: bold; margin-bottom: 4px; }
+    .eyebrow::before { content: ""; display: inline-block; width: 14px; height: 4px; background: var(--accent); vertical-align: middle; margin-right: 8px; }
+    h1 { font-size: 18px; font-weight: 700; margin: 0 0 8px; }
+    .search { width: 100%; padding: 8px 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 12px; }
+    .search:focus { outline: none; border-color: var(--accent); }
+    .tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px 14px; border-bottom: 1px solid var(--border); position: sticky; top: 84px; z-index: 9; background: var(--bg); }
+    .tab { font-family: Consolas, monospace; font-size: 10px; padding: 4px 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; text-transform: uppercase; font-weight: bold; }
+    .tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .tab:hover:not(.active) { color: var(--text); border-color: var(--border-hi); }
+    .library { padding: 14px; }
+    .category { margin-bottom: 18px; }
+    .cat-title { font-family: Consolas, monospace; font-size: 10px; color: var(--accent); text-transform: uppercase; font-weight: bold; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+    .row { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    .tile { background: var(--surface); border: 1px solid var(--border); padding: 10px 12px; cursor: pointer; transition: border-color 0.1s ease; }
+    .tile:hover { border-color: var(--accent); }
+    .tile.busy { opacity: 0.5; cursor: wait; }
+    .tile-name { font-size: 12px; color: var(--text); font-weight: 600; }
+    .tile-desc { font-size: 11px; color: var(--text2); margin-top: 2px; }
+    .status { padding: 14px; font-size: 12px; color: var(--text2); border-top: 1px solid var(--border); position: sticky; bottom: 0; background: var(--bg); }
+    .status.ok { color: var(--accent); } .status.err { color: #EF4444; }
+    .empty { padding: 32px 14px; text-align: center; color: var(--text3); }
+    footer { padding: 14px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text3); }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">// Thoughtrons / Block Library / Excel</div>
+  <h1>Pick a block.</h1>
+  <input id="search" class="search" type="text" placeholder="Search blocks…"/>
+</header>
+
+<div id="tabs" class="tabs"></div>
+<div id="library" class="library"></div>
+<div id="status" class="status">Ready.</div>
+
+<footer>
+  Inserts at your active cell. Place the cursor where you want the block, then click.<br>
+  Brand owner: Anirudh Srivastava · <a href="https://thoughtrons.in" target="_blank">thoughtrons.in</a>
+</footer>
+
+<script>
+const LIBRARY = [
+  {category: "Headers",        name: "Brand header (eyebrow + title + sub)", key: "brand_header",          desc: "3-row brand chrome at active cell"},
+  {category: "Headers",        name: "KPI strip (4 KPIs)",                   key: "kpi_strip",             desc: "4 labelled big-number cells side-by-side"},
+  {category: "Tables",         name: "RAG dashboard",                        key: "rag_dashboard",         desc: "8-col table with RAG dropdown + % complete"},
+  {category: "Tables",         name: "Risk block",                            key: "risk_block",            desc: "9-col risk table with score formula + status dropdown"},
+  {category: "Tables",         name: "Action items block",                    key: "action_items_block",    desc: "5-col action table with status dropdown"},
+  {category: "Tables",         name: "RACI matrix",                           key: "raci_matrix",           desc: "Activity × Person matrix with R/A/C/I"},
+  {category: "Tables",         name: "Pipeline block",                        key: "pipeline_block",        desc: "9-col opportunity table with weighted-value formula"},
+  {category: "Classification", name: "Stamp UNCLASSIFIED",                    key: "classify_unclassified", desc: "Adds banner row at top of sheet (green)"},
+  {category: "Classification", name: "Stamp INTERNAL",                        key: "classify_internal",     desc: "Adds banner row at top of sheet (orange)"},
+  {category: "Classification", name: "Stamp RESTRICTED",                      key: "classify_restricted",   desc: "Adds banner row at top of sheet (red)"},
+  {category: "Classification", name: "Stamp CONFIDENTIAL",                    key: "classify_confidential", desc: "Adds banner row at top of sheet (red)"},
+];
+const CATEGORIES = ["All", "Headers", "Tables", "Classification"];
+
+let currentTab = "All", currentSearch = "";
+
+function render() {
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  CATEGORIES.forEach(cat => {
+    const b = document.createElement("button");
+    b.className = "tab" + (cat === currentTab ? " active" : "");
+    b.textContent = cat;
+    b.onclick = () => { currentTab = cat; render(); };
+    tabs.appendChild(b);
+  });
+  const filtered = LIBRARY.filter(l => {
+    if (currentTab !== "All" && l.category !== currentTab) return false;
+    if (currentSearch && !(l.name + " " + l.desc).toLowerCase().includes(currentSearch.toLowerCase())) return false;
+    return true;
+  });
+  const lib = document.getElementById("library");
+  lib.innerHTML = "";
+  if (!filtered.length) { lib.innerHTML = '<div class="empty">No matches.</div>'; return; }
+  const groups = {};
+  filtered.forEach(l => { (groups[l.category] = groups[l.category] || []).push(l); });
+  Object.keys(groups).forEach(cat => {
+    const sec = document.createElement("div");
+    sec.className = "category";
+    sec.innerHTML = '<div class="cat-title">' + cat + '</div><div class="row"></div>';
+    const row = sec.querySelector(".row");
+    groups[cat].forEach(l => row.appendChild(makeTile(l)));
+    lib.appendChild(sec);
+  });
+}
+
+function makeTile(item) {
+  const t = document.createElement("div");
+  t.className = "tile";
+  t.innerHTML = '<div class="tile-name">' + esc(item.name) + '</div>' +
+                '<div class="tile-desc">' + esc(item.desc) + '</div>';
+  t.onclick = () => insertFromTile(t, item.key, item.name);
+  return t;
+}
+function esc(s) { return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function insertFromTile(tileEl, key, name) {
+  setStatus("Inserting " + name + "…");
+  tileEl.classList.add("busy");
+  const fn = (window.ThoughtronsBlocks || {})[key];
+  if (!fn) { setStatus("Unknown block: " + key, "err"); tileEl.classList.remove("busy"); return; }
+  Excel.run(ctx => Promise.resolve(fn(ctx)))
+    .then(() => setStatus("Inserted: " + name, "ok"))
+    .catch(err => { console.error(err); setStatus("Failed: " + (err.message || err), "err"); })
+    .finally(() => tileEl.classList.remove("busy"));
+}
+
+function setStatus(msg, kind) {
+  const s = document.getElementById("status");
+  s.textContent = msg;
+  s.className = "status" + (kind ? " " + kind : "");
+}
+
+Office.onReady(() => {
+  document.getElementById("search").placeholder = "Search " + LIBRARY.length + " blocks…";
+  document.getElementById("search").addEventListener("input", e => { currentSearch = e.target.value; render(); });
+  render();
+  setStatus("Ready — select an active cell, then click a block to insert.");
+});
+</script>
+</body>
+</html>

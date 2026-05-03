@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Thoughtrons Excel Add-in — V1.0
+  Adds a "Thoughtrons" ribbon tab to Excel with:
+    - Block Library (taskpane) — 11 brand-styled inserts
+    - Quick Insert — 5 most-used blocks as one-click ribbon buttons
+    - Classification — 4 banners that stamp a row at the top of the sheet
+
+  ============================================================
+  BEFORE FIRST DEPLOYMENT — REPLACE THE BASE URL
+  ============================================================
+  Find:    https://thoughtrons.github.io/excel-addin
+  Replace: <your hosting URL — must be HTTPS, no trailing slash>
+  ============================================================
+-->
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
+
+  <Id>57d1b780-e903-4aa5-a931-29c2d4ef2aa6</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Thoughtrons</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Thoughtrons Excel"/>
+  <Description DefaultValue="Brand-styled block library, classification stamps, and quick-insert toolbox for Thoughtrons Excel workbooks."/>
+  <IconUrl DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/tab-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/tab-80.png"/>
+  <SupportUrl DefaultValue="https://thoughtrons.in/"/>
+
+  <AppDomains>
+    <AppDomain>https://thoughtrons.github.io</AppDomain>
+    <AppDomain>https://thoughtrons.in</AppDomain>
+  </AppDomains>
+
+  <Hosts>
+    <Host Name="Workbook"/>
+  </Hosts>
+
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://thoughtrons.github.io/excel-addin/src/taskpane.html"/>
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+
+          <GetStarted>
+            <Title resid="GetStarted.Title"/>
+            <Description resid="GetStarted.Description"/>
+            <LearnMoreUrl resid="GetStarted.LearnMoreUrl"/>
+          </GetStarted>
+
+          <FunctionFile resid="Commands.Url"/>
+
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <CustomTab id="ThoughtronsTab">
+
+              <Group id="GroupLibrary">
+                <Label resid="GroupLibrary.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon.Library.16"/>
+                  <bt:Image size="32" resid="Icon.Library.32"/>
+                  <bt:Image size="80" resid="Icon.Library.80"/>
+                </Icon>
+                <Control xsi:type="Button" id="BtnLibrary">
+                  <Label resid="Btn.Library.Label"/>
+                  <Supertip><Title resid="Btn.Library.Label"/><Description resid="Btn.Library.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Library.16"/>
+                    <bt:Image size="32" resid="Icon.Library.32"/>
+                    <bt:Image size="80" resid="Icon.Library.80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ThoughtronsLibrary</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
+              </Group>
+
+              <Group id="GroupQuick">
+                <Label resid="GroupQuick.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon.Grid.16"/>
+                  <bt:Image size="32" resid="Icon.Grid.32"/>
+                  <bt:Image size="80" resid="Icon.Grid.80"/>
+                </Icon>
+
+                <Control xsi:type="Button" id="BtnHeader">
+                  <Label resid="Btn.Header.Label"/>
+                  <Supertip><Title resid="Btn.Header.Label"/><Description resid="Btn.Header.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Grid.16"/>
+                    <bt:Image size="32" resid="Icon.Grid.32"/>
+                    <bt:Image size="80" resid="Icon.Grid.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>insertBrandHeader</FunctionName></Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnKpi">
+                  <Label resid="Btn.Kpi.Label"/>
+                  <Supertip><Title resid="Btn.Kpi.Label"/><Description resid="Btn.Kpi.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Grid.16"/>
+                    <bt:Image size="32" resid="Icon.Grid.32"/>
+                    <bt:Image size="80" resid="Icon.Grid.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>insertKpiStrip</FunctionName></Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnRag">
+                  <Label resid="Btn.Rag.Label"/>
+                  <Supertip><Title resid="Btn.Rag.Label"/><Description resid="Btn.Rag.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Grid.16"/>
+                    <bt:Image size="32" resid="Icon.Grid.32"/>
+                    <bt:Image size="80" resid="Icon.Grid.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>insertRagDashboard</FunctionName></Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnRiskBlk">
+                  <Label resid="Btn.RiskBlk.Label"/>
+                  <Supertip><Title resid="Btn.RiskBlk.Label"/><Description resid="Btn.RiskBlk.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Grid.16"/>
+                    <bt:Image size="32" resid="Icon.Grid.32"/>
+                    <bt:Image size="80" resid="Icon.Grid.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>insertRiskBlock</FunctionName></Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnActionBlk">
+                  <Label resid="Btn.ActionBlk.Label"/>
+                  <Supertip><Title resid="Btn.ActionBlk.Label"/><Description resid="Btn.ActionBlk.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Grid.16"/>
+                    <bt:Image size="32" resid="Icon.Grid.32"/>
+                    <bt:Image size="80" resid="Icon.Grid.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>insertActionBlock</FunctionName></Action>
+                </Control>
+              </Group>
+
+              <Group id="GroupClassify">
+                <Label resid="GroupClassify.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon.Classify.16"/>
+                  <bt:Image size="32" resid="Icon.Classify.32"/>
+                  <bt:Image size="80" resid="Icon.Classify.80"/>
+                </Icon>
+
+                <Control xsi:type="Menu" id="MenuClassify">
+                  <Label resid="Menu.Classify.Label"/>
+                  <Supertip><Title resid="Menu.Classify.Label"/><Description resid="Menu.Classify.Tip"/></Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Classify.16"/>
+                    <bt:Image size="32" resid="Icon.Classify.32"/>
+                    <bt:Image size="80" resid="Icon.Classify.80"/>
+                  </Icon>
+                  <Items>
+                    <Item id="ClassUnclass">
+                      <Label resid="Class.Unclass.Label"/>
+                      <Supertip><Title resid="Class.Unclass.Label"/><Description resid="Class.Unclass.Tip"/></Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="Icon.Classify.16"/>
+                        <bt:Image size="32" resid="Icon.Classify.32"/>
+                        <bt:Image size="80" resid="Icon.Classify.80"/>
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction"><FunctionName>stampUnclassified</FunctionName></Action>
+                    </Item>
+                    <Item id="ClassInternal">
+                      <Label resid="Class.Internal.Label"/>
+                      <Supertip><Title resid="Class.Internal.Label"/><Description resid="Class.Internal.Tip"/></Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="Icon.Classify.16"/>
+                        <bt:Image size="32" resid="Icon.Classify.32"/>
+                        <bt:Image size="80" resid="Icon.Classify.80"/>
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction"><FunctionName>stampInternal</FunctionName></Action>
+                    </Item>
+                    <Item id="ClassRestricted">
+                      <Label resid="Class.Restricted.Label"/>
+                      <Supertip><Title resid="Class.Restricted.Label"/><Description resid="Class.Restricted.Tip"/></Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="Icon.Classify.16"/>
+                        <bt:Image size="32" resid="Icon.Classify.32"/>
+                        <bt:Image size="80" resid="Icon.Classify.80"/>
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction"><FunctionName>stampRestricted</FunctionName></Action>
+                    </Item>
+                    <Item id="ClassConfidential">
+                      <Label resid="Class.Confid.Label"/>
+                      <Supertip><Title resid="Class.Confid.Label"/><Description resid="Class.Confid.Tip"/></Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="Icon.Classify.16"/>
+                        <bt:Image size="32" resid="Icon.Classify.32"/>
+                        <bt:Image size="80" resid="Icon.Classify.80"/>
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction"><FunctionName>stampConfidential</FunctionName></Action>
+                    </Item>
+                  </Items>
+                </Control>
+              </Group>
+
+              <Label resid="ThoughtronsTab.Label"/>
+            </CustomTab>
+          </ExtensionPoint>
+
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.Library.16"   DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/library-16.png"/>
+        <bt:Image id="Icon.Library.32"   DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/library-32.png"/>
+        <bt:Image id="Icon.Library.80"   DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/library-80.png"/>
+        <bt:Image id="Icon.Grid.16"      DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/grid-16.png"/>
+        <bt:Image id="Icon.Grid.32"      DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/grid-32.png"/>
+        <bt:Image id="Icon.Grid.80"      DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/grid-80.png"/>
+        <bt:Image id="Icon.Classify.16"  DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/classify-16.png"/>
+        <bt:Image id="Icon.Classify.32"  DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/classify-32.png"/>
+        <bt:Image id="Icon.Classify.80"  DefaultValue="https://thoughtrons.github.io/excel-addin/assets/icons/classify-80.png"/>
+      </bt:Images>
+
+      <bt:Urls>
+        <bt:Url id="Commands.Url"            DefaultValue="https://thoughtrons.github.io/excel-addin/src/commands.html"/>
+        <bt:Url id="Taskpane.Url"            DefaultValue="https://thoughtrons.github.io/excel-addin/src/taskpane.html"/>
+        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://thoughtrons.in/"/>
+      </bt:Urls>
+
+      <bt:ShortStrings>
+        <bt:String id="ThoughtronsTab.Label"   DefaultValue="Thoughtrons"/>
+        <bt:String id="GetStarted.Title"       DefaultValue="Welcome to Thoughtrons for Excel"/>
+        <bt:String id="GroupLibrary.Label"     DefaultValue="Block Library"/>
+        <bt:String id="GroupQuick.Label"       DefaultValue="Quick Insert"/>
+        <bt:String id="GroupClassify.Label"    DefaultValue="Classification"/>
+        <bt:String id="Btn.Library.Label"      DefaultValue="Block Library"/>
+        <bt:String id="Btn.Header.Label"       DefaultValue="Brand Header"/>
+        <bt:String id="Btn.Kpi.Label"          DefaultValue="KPI Strip"/>
+        <bt:String id="Btn.Rag.Label"          DefaultValue="RAG Dashboard"/>
+        <bt:String id="Btn.RiskBlk.Label"      DefaultValue="Risk Block"/>
+        <bt:String id="Btn.ActionBlk.Label"    DefaultValue="Action Items"/>
+        <bt:String id="Menu.Classify.Label"    DefaultValue="Stamp"/>
+        <bt:String id="Class.Unclass.Label"    DefaultValue="UNCLASSIFIED"/>
+        <bt:String id="Class.Internal.Label"   DefaultValue="INTERNAL"/>
+        <bt:String id="Class.Restricted.Label" DefaultValue="RESTRICTED"/>
+        <bt:String id="Class.Confid.Label"     DefaultValue="CONFIDENTIAL"/>
+      </bt:ShortStrings>
+
+      <bt:LongStrings>
+        <bt:String id="GetStarted.Description" DefaultValue="The Thoughtrons tab gives you brand-styled blocks — KPI strips, RAG dashboards, risk and action tables — plus one-click classification banners."/>
+        <bt:String id="Btn.Library.Tip"        DefaultValue="Open the block library — 11 brand-styled inserts organised by category."/>
+        <bt:String id="Btn.Header.Tip"         DefaultValue="Insert a brand-chrome header (eyebrow + title + subtitle) at the active cell."/>
+        <bt:String id="Btn.Kpi.Tip"            DefaultValue="Insert a 4-KPI strip (label row + big-number row) at the active cell."/>
+        <bt:String id="Btn.Rag.Tip"            DefaultValue="Insert an 8-column RAG dashboard table with dropdowns + conditional formatting."/>
+        <bt:String id="Btn.RiskBlk.Tip"        DefaultValue="Insert a 9-column risk table with score formula + status dropdown."/>
+        <bt:String id="Btn.ActionBlk.Tip"      DefaultValue="Insert a 5-column action items table with status dropdown."/>
+        <bt:String id="Menu.Classify.Tip"      DefaultValue="Stamp the sheet with a classification banner row at the top."/>
+        <bt:String id="Class.Unclass.Tip"      DefaultValue="Stamp UNCLASSIFIED (green)."/>
+        <bt:String id="Class.Internal.Tip"     DefaultValue="Stamp INTERNAL (orange)."/>
+        <bt:String id="Class.Restricted.Tip"   DefaultValue="Stamp RESTRICTED (red)."/>
+        <bt:String id="Class.Confid.Tip"       DefaultValue="Stamp CONFIDENTIAL (red)."/>
+      </bt:LongStrings>
+    </Resources>
+
+  </VersionOverrides>
+</OfficeApp>
